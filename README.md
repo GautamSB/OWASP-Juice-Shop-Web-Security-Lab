@@ -2,7 +2,7 @@
 
 ## 📖 Overview
 
-This repository demonstrates the use of **Burp Suite Community Edition** to analyze web application traffic in a controlled laboratory environment using the **OWASP Juice Shop** application.
+This repository demonstrates the use of **Burp Suite Professional Edition** to analyze web application traffic in a controlled laboratory environment using the **OWASP Juice Shop** application.
 
 The assessment focuses on intercepting HTTP requests, analyzing client-server communication, inspecting cookies and HTTP headers, examining application behavior, and documenting security observations through Burp Suite's integrated tools.
 
@@ -34,7 +34,7 @@ The objectives of this assessment were to:
 |-----------|---------|
 | Operating System | Kali Linux |
 | Target Application | OWASP Juice Shop |
-| Web Proxy | Burp Suite Community Edition |
+| Web Proxy | Burp Suite Professional Edition |
 | Browser | Google Chrome |
 | Proxy Extension | FoxyProxy |
 | Network | Local Lab |
@@ -44,7 +44,7 @@ The objectives of this assessment were to:
 # 🛠️ Tools Used
 
 - Kali Linux
-- Burp Suite Community Edition
+- Burp Suite Professional Edition
 - Google Chrome
 - FoxyProxy
 - OWASP Juice Shop
@@ -55,7 +55,7 @@ The objectives of this assessment were to:
 
 The assessment followed these steps:
 
-1. Configure Burp Suite Community Edition.
+1. Configure Burp Suite Professional Edition.
 2. Configure FoxyProxy to route browser traffic through Burp Suite.
 3. Install and trust the Burp Suite CA Certificate.
 4. Browse the OWASP Juice Shop application.
@@ -135,7 +135,7 @@ The assessment highlighted several important web application security considerat
 
 After completing this assessment, I gained practical experience in:
 
-- Configuring Burp Suite Community Edition
+- Configuring Burp Suite Professional Edition
 - Configuring browser proxy settings using FoxyProxy
 - Capturing HTTP and HTTPS traffic
 - Analyzing HTTP requests and responses
