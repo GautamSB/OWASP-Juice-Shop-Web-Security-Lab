@@ -1,30 +1,27 @@
-# Burp Suite Web Application Security Lab
+# OWASP Juice Shop Web Application Security Assessment using Burp Suite
 
 ## 📖 Overview
 
-This repository demonstrates the use of **Burp Suite Professional Edition** to analyze web application traffic in a controlled laboratory environment using the **OWASP Juice Shop** application.
+This repository documents a comprehensive Web Application Security Assessment performed against the intentionally vulnerable **OWASP Juice Shop** application using **Burp Suite Professional**.
 
-The assessment focuses on intercepting HTTP requests, analyzing client-server communication, inspecting cookies and HTTP headers, examining application behavior, and documenting security observations through Burp Suite's integrated tools.
+The assessment demonstrates a structured penetration testing methodology by identifying, analyzing, and validating common web application vulnerabilities through manual testing techniques. The objective was to understand application behavior, manipulate HTTP requests, evaluate server responses, and assess the application's security posture using industry-standard web security testing practices.
 
 ---
 
-# 🎯 Objective
+# 🎯 Assessment Objectives
 
 The objectives of this assessment were to:
 
-- Configure Burp Suite for web application testing
-- Configure FoxyProxy for browser proxying
-- Install and trust the Burp CA Certificate
-- Intercept HTTP/HTTPS requests
-- Analyze HTTP requests and responses
-- Inspect HTTP headers
-- Analyze cookies and session management
-- Examine API requests
-- Use Burp Repeater for request analysis
-- Use Burp Decoder for encoding and decoding
-- Use Burp Comparer for response comparison
-- Map the application structure using Target Site Map
-- Document security observations
+- Configure Burp Suite as an intercepting proxy
+- Capture and analyze HTTP/HTTPS requests
+- Map the application's attack surface
+- Perform authentication testing
+- Analyze request and response behavior
+- Manipulate application parameters
+- Validate server-side input handling
+- Perform manual vulnerability verification
+- Use Burp Suite tools for security assessment
+- Document findings with supporting evidence
 
 ---
 
@@ -32,121 +29,199 @@ The objectives of this assessment were to:
 
 | Component | Details |
 |-----------|---------|
-| Operating System | Kali Linux |
-| Target Application | OWASP Juice Shop |
-| Web Proxy | Burp Suite Professional Edition |
-| Browser | Google Chrome |
+| Operating System | Windows 11 |
+| Web Browser | Google Chrome |
 | Proxy Extension | FoxyProxy |
-| Network | Local Lab |
+| Web Proxy | Burp Suite Professional |
+| Target Application | OWASP Juice Shop |
+| Deployment | Docker Container |
+| Docker Image | bkimminich/juice-shop |
+| Local URL | http://localhost:3000 |
 
 ---
 
-# 🛠️ Tools Used
+# 🛠 Tools Used
 
-- Kali Linux
-- Burp Suite Professional Edition
+- Burp Suite Professional
+- Docker Desktop
+- OWASP Juice Shop
 - Google Chrome
 - FoxyProxy
-- OWASP Juice Shop
 
 ---
 
-# 📚 Methodology
+# 📦 Lab Setup
 
-The assessment followed these steps:
+## Pull the OWASP Juice Shop Docker Image
 
-1. Configure Burp Suite Professional Edition.
-2. Configure FoxyProxy to route browser traffic through Burp Suite.
-3. Install and trust the Burp Suite CA Certificate.
-4. Browse the OWASP Juice Shop application.
-5. Capture HTTP and HTTPS traffic.
-6. Analyze requests and responses.
-7. Inspect cookies and session tokens.
-8. Examine request and response headers.
-9. Analyze API communication.
-10. Use Burp Suite tools for traffic analysis.
-11. Capture screenshots of key observations.
-12. Document findings and recommendations.
+```bash
+docker pull bkimminich/juice-shop
+```
+
+## Run the Docker Container
+
+```bash
+docker run --rm -p 3000:3000 bkimminich/juice-shop
+```
+
+## Access the Application
+
+```
+http://localhost:3000
+```
 
 ---
 
-# 🔍 Burp Suite Components Used
+# ⚙️ Burp Suite Configuration
 
-- Proxy
-- HTTP History
-- Target Site Map
+The testing environment was configured using Burp Suite Professional as the intercepting proxy.
+
+Configuration included:
+
+- Proxy Listener (127.0.0.1:8080)
+- Burp CA Certificate Installation
+- FoxyProxy Browser Configuration
+- Target Scope Definition
+- HTTP History Monitoring
 - Repeater
+- Intruder
 - Decoder
 - Comparer
 
 ---
 
-# 🔎 HTTP Features Analyzed
+# 🔍 Assessment Methodology
 
-- HTTP Methods (GET, POST)
-- URL Parameters
-- Request Headers
-- Response Headers
-- Cookies
-- Session Tokens
-- JSON Requests
-- JSON Responses
-- HTTP Status Codes
-- REST API Communication
+The assessment followed a structured penetration testing approach consisting of the following phases:
+
+### Phase 1 – Environment Preparation
+
+- Configure Docker
+- Deploy OWASP Juice Shop
+- Configure Burp Suite
+- Configure FoxyProxy
+- Install Burp Certificate
+- Verify proxy interception
+
+### Phase 2 – Reconnaissance
+
+- Browse the application
+- Build target site map
+- Analyze endpoints
+- Review HTTP history
+- Identify attack surface
+
+### Phase 3 – Authentication Testing
+
+- Capture login requests
+- Analyze authentication workflow
+- Modify authentication parameters
+- Observe server responses
+- Test login functionality
+
+### Phase 4 – Input Validation Testing
+
+- Manipulate request parameters
+- Test client-side validation
+- Verify server-side validation
+- Analyze error handling
+
+### Phase 5 – Parameter Manipulation
+
+- Modify HTTP requests
+- Replay requests using Repeater
+- Compare server responses
+- Validate parameter handling
+
+### Phase 6 – Intruder Testing
+
+- Configure attack positions
+- Perform payload testing
+- Analyze response variations
+- Identify abnormal behavior
+
+### Phase 7 – Vulnerability Validation
+
+- Verify identified issues
+- Capture supporting evidence
+- Analyze impact
+- Document observations
 
 ---
 
-# 📊 Results
+# 🔎 Burp Suite Components Used
 
-The assessment successfully demonstrated:
+| Component | Purpose |
+|-----------|---------|
+| Proxy | Capture and intercept HTTP requests |
+| HTTP History | Review application traffic |
+| Target | Map application endpoints |
+| Repeater | Modify and replay requests |
+| Intruder | Automated payload testing |
+| Decoder | Encode and decode data |
+| Comparer | Compare responses |
 
-- Browser traffic interception
-- HTTP request analysis
-- HTTP response analysis
-- Header inspection
-- Cookie analysis
-- Session management analysis
-- API request inspection
-- Request replay using Repeater
-- Encoding and decoding using Decoder
-- Response comparison using Comparer
-- Application mapping using Target Site Map
+---
+
+# 📊 Assessment Deliverables
+
+The assessment includes:
+
+- Burp Suite configuration
+- HTTP request interception
+- Application mapping
+- Request modification
+- Response analysis
+- Parameter manipulation
+- Authentication testing
+- Intruder testing
+- Screenshots
+- Detailed assessment report
+
+---
 
 # 📄 Detailed Report
 
-For the complete assessment methodology, observations, findings, and recommendations, see **[REPORT.md](REPORT.md)**.
+The complete assessment methodology, request analysis, observations, findings, screenshots, and recommendations are available in:
+
+**REPORT.md**
 
 ---
 
-# 🛡️ Security Observations
+# 📸 Screenshots
 
-The assessment highlighted several important web application security considerations:
+All screenshots demonstrating the assessment process are available in the **Screenshots/** directory.
 
-- Sensitive information should always be transmitted over HTTPS.
-- Session cookies should use Secure, HttpOnly, and SameSite attributes.
-- HTTP security headers help mitigate common web attacks.
-- Input validation should be implemented on both client and server sides.
-- Proper authentication and session management are essential for protecting user accounts.
-- Regular security testing helps identify potential weaknesses before deployment.
+The screenshots include:
+
+- Docker deployment
+- Burp Suite configuration
+- FoxyProxy setup
+- Proxy interception
+- HTTP History
+- Site Map
+- Authentication requests
+- Repeater testing
+- Intruder testing
+- Response comparison
+- Vulnerability validation
 
 ---
 
-# 📖 Learning Outcomes
+# 📚 Learning Outcomes
 
 After completing this assessment, I gained practical experience in:
 
-- Configuring Burp Suite Professional Edition
-- Configuring browser proxy settings using FoxyProxy
-- Capturing HTTP and HTTPS traffic
-- Analyzing HTTP requests and responses
-- Understanding web application communication
-- Inspecting cookies and session management
-- Examining HTTP headers
-- Mapping application functionality
-- Using Burp Repeater
-- Using Burp Decoder
-- Using Burp Comparer
-- Documenting web application security assessments
+- Web Application Penetration Testing
+- Burp Suite Professional
+- HTTP Request Analysis
+- Web Proxy Configuration
+- Request Manipulation
+- Authentication Testing
+- Parameter Tampering
+- Manual Vulnerability Verification
+- Response Analysis
+- Professional Security Reporting
 
 ---
 
@@ -156,4 +231,4 @@ After completing this assessment, I gained practical experience in:
 
 Aspiring Cybersecurity Engineer | VAPT Enthusiast
 
-**GitHub:** https://github.com/GautamSB
+GitHub: https://github.com/GautamSB
