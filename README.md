@@ -208,28 +208,6 @@ The complete penetration testing process, observations, request analysis, screen
 
 ---
 
-# 📸 Screenshots
-
-The **Screenshots/** directory contains evidence collected throughout the assessment.
-
-Included screenshots:
-
-- Docker image deployment
-- Running Docker container
-- Burp Suite proxy configuration
-- Burp Built-in Browser
-- HTTP request interception
-- HTTP History
-- Target Site Map
-- Authentication testing
-- Repeater request modification
-- Intruder attack configuration
-- Response comparison
-- Vulnerability validation
-- Assessment evidence
-
----
-
 # 📚 Learning Outcomes
 
 This assessment provided hands-on experience in:
