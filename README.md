@@ -4,7 +4,7 @@
 
 This repository documents a comprehensive Web Application Security Assessment performed against the intentionally vulnerable **OWASP Juice Shop** application using **Burp Suite Professional**.
 
-The assessment demonstrates a structured penetration testing methodology by identifying, analyzing, and validating common web application vulnerabilities through manual testing techniques. The objective was to understand application behavior, manipulate HTTP requests, evaluate server responses, and assess the application's security posture using industry-standard web security testing practices.
+The assessment demonstrates a structured penetration testing methodology by identifying, analyzing, and validating common web application vulnerabilities through manual testing techniques. The objective was to understand application behavior, intercept and manipulate HTTP requests, evaluate server responses, and assess the application's security posture using industry-standard web application penetration testing practices.
 
 ---
 
@@ -13,14 +13,14 @@ The assessment demonstrates a structured penetration testing methodology by iden
 The objectives of this assessment were to:
 
 - Configure Burp Suite as an intercepting proxy
-- Capture and analyze HTTP/HTTPS requests
+- Deploy OWASP Juice Shop using Docker
+- Capture and analyze HTTP/HTTPS traffic
 - Map the application's attack surface
 - Perform authentication testing
 - Analyze request and response behavior
-- Manipulate application parameters
+- Manipulate HTTP parameters
 - Validate server-side input handling
-- Perform manual vulnerability verification
-- Use Burp Suite tools for security assessment
+- Verify common web application vulnerabilities
 - Document findings with supporting evidence
 
 ---
@@ -29,12 +29,11 @@ The objectives of this assessment were to:
 
 | Component | Details |
 |-----------|---------|
-| Operating System | Windows 11 |
-| Web Browser | Google Chrome |
-| Proxy Extension | FoxyProxy |
+| Host Operating System | Windows 11 |
 | Web Proxy | Burp Suite Professional |
+| Browser | Burp Suite Built-in Browser |
 | Target Application | OWASP Juice Shop |
-| Deployment | Docker Container |
+| Deployment Method | Docker Container |
 | Docker Image | bkimminich/juice-shop |
 | Local URL | http://localhost:3000 |
 
@@ -45,8 +44,7 @@ The objectives of this assessment were to:
 - Burp Suite Professional
 - Docker Desktop
 - OWASP Juice Shop
-- Google Chrome
-- FoxyProxy
+- Burp Suite Built-in Browser
 
 ---
 
@@ -64,6 +62,12 @@ docker pull bkimminich/juice-shop
 docker run --rm -p 3000:3000 bkimminich/juice-shop
 ```
 
+## Verify Running Container
+
+```bash
+docker ps
+```
+
 ## Access the Application
 
 ```
@@ -74,14 +78,14 @@ http://localhost:3000
 
 # ⚙️ Burp Suite Configuration
 
-The testing environment was configured using Burp Suite Professional as the intercepting proxy.
+The assessment environment was configured using Burp Suite Professional as the primary interception platform.
 
 Configuration included:
 
 - Proxy Listener (127.0.0.1:8080)
 - Burp CA Certificate Installation
-- FoxyProxy Browser Configuration
-- Target Scope Definition
+- Burp Suite Built-in Browser
+- Target Scope Configuration
 - HTTP History Monitoring
 - Repeater
 - Intruder
@@ -92,60 +96,75 @@ Configuration included:
 
 # 🔍 Assessment Methodology
 
-The assessment followed a structured penetration testing approach consisting of the following phases:
+The assessment followed a structured web application penetration testing methodology.
 
-### Phase 1 – Environment Preparation
+## Phase 1 — Environment Preparation
 
-- Configure Docker
-- Deploy OWASP Juice Shop
-- Configure Burp Suite
-- Configure FoxyProxy
-- Install Burp Certificate
+- Deploy OWASP Juice Shop using Docker
+- Configure Burp Suite Professional
+- Install Burp CA Certificate
+- Launch Burp Built-in Browser
 - Verify proxy interception
+- Confirm HTTP traffic capture
 
-### Phase 2 – Reconnaissance
+---
+
+## Phase 2 — Reconnaissance
 
 - Browse the application
-- Build target site map
-- Analyze endpoints
-- Review HTTP history
-- Identify attack surface
+- Build the application Site Map
+- Identify exposed endpoints
+- Analyze HTTP requests
+- Review application functionality
+- Define testing scope
 
-### Phase 3 – Authentication Testing
+---
+
+## Phase 3 — Authentication Testing
 
 - Capture login requests
 - Analyze authentication workflow
 - Modify authentication parameters
 - Observe server responses
-- Test login functionality
+- Evaluate authentication controls
 
-### Phase 4 – Input Validation Testing
+---
 
-- Manipulate request parameters
+## Phase 4 — Input Validation Testing
+
 - Test client-side validation
-- Verify server-side validation
-- Analyze error handling
+- Validate server-side input filtering
+- Analyze error messages
+- Manipulate request parameters
+- Observe response behavior
 
-### Phase 5 – Parameter Manipulation
+---
+
+## Phase 5 — Parameter Manipulation
 
 - Modify HTTP requests
 - Replay requests using Repeater
-- Compare server responses
+- Compare application responses
 - Validate parameter handling
 
-### Phase 6 – Intruder Testing
+---
 
-- Configure attack positions
-- Perform payload testing
-- Analyze response variations
-- Identify abnormal behavior
+## Phase 6 — Intruder Testing
 
-### Phase 7 – Vulnerability Validation
+- Configure payload positions
+- Execute automated payload attacks
+- Analyze response differences
+- Identify abnormal application behavior
 
-- Verify identified issues
-- Capture supporting evidence
-- Analyze impact
-- Document observations
+---
+
+## Phase 7 — Vulnerability Validation
+
+- Verify identified vulnerabilities
+- Capture evidence
+- Assess security impact
+- Document findings
+- Recommend remediation
 
 ---
 
@@ -153,36 +172,37 @@ The assessment followed a structured penetration testing approach consisting of 
 
 | Component | Purpose |
 |-----------|---------|
-| Proxy | Capture and intercept HTTP requests |
-| HTTP History | Review application traffic |
-| Target | Map application endpoints |
-| Repeater | Modify and replay requests |
+| Proxy | Intercept HTTP/HTTPS traffic |
+| HTTP History | Analyze application requests |
+| Target | Build application Site Map |
+| Repeater | Modify and replay HTTP requests |
 | Intruder | Automated payload testing |
 | Decoder | Encode and decode data |
-| Comparer | Compare responses |
+| Comparer | Compare requests and responses |
 
 ---
 
 # 📊 Assessment Deliverables
 
-The assessment includes:
+This assessment includes:
 
+- Docker deployment
 - Burp Suite configuration
 - HTTP request interception
-- Application mapping
-- Request modification
-- Response analysis
-- Parameter manipulation
+- Site Map generation
 - Authentication testing
+- Request manipulation
+- Response analysis
+- Parameter tampering
 - Intruder testing
-- Screenshots
-- Detailed assessment report
+- Evidence collection
+- Professional assessment report
 
 ---
 
 # 📄 Detailed Report
 
-The complete assessment methodology, request analysis, observations, findings, screenshots, and recommendations are available in:
+The complete penetration testing process, observations, request analysis, screenshots, findings, and remediation recommendations are documented in:
 
 **REPORT.md**
 
@@ -190,38 +210,48 @@ The complete assessment methodology, request analysis, observations, findings, s
 
 # 📸 Screenshots
 
-All screenshots demonstrating the assessment process are available in the **Screenshots/** directory.
+The **Screenshots/** directory contains evidence collected throughout the assessment.
 
-The screenshots include:
+Included screenshots:
 
-- Docker deployment
-- Burp Suite configuration
-- FoxyProxy setup
-- Proxy interception
+- Docker image deployment
+- Running Docker container
+- Burp Suite proxy configuration
+- Burp Built-in Browser
+- HTTP request interception
 - HTTP History
-- Site Map
-- Authentication requests
-- Repeater testing
-- Intruder testing
+- Target Site Map
+- Authentication testing
+- Repeater request modification
+- Intruder attack configuration
 - Response comparison
 - Vulnerability validation
+- Assessment evidence
 
 ---
 
 # 📚 Learning Outcomes
 
-After completing this assessment, I gained practical experience in:
+This assessment provided hands-on experience in:
 
 - Web Application Penetration Testing
 - Burp Suite Professional
-- HTTP Request Analysis
-- Web Proxy Configuration
-- Request Manipulation
+- Docker-based Lab Deployment
+- HTTP/HTTPS Traffic Analysis
+- Request Interception
+- Manual Request Manipulation
 - Authentication Testing
+- Input Validation Testing
 - Parameter Tampering
+- Intruder-based Testing
 - Manual Vulnerability Verification
-- Response Analysis
 - Professional Security Reporting
+
+---
+
+# ⚠️ Disclaimer
+
+This assessment was conducted exclusively within a controlled laboratory environment using **OWASP Juice Shop**, an intentionally vulnerable application designed for security education and penetration testing practice. No testing was performed against unauthorized systems.
 
 ---
 
