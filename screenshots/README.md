@@ -35,7 +35,7 @@ This directory contains screenshots captured during the OWASP Juice Shop Web App
 | 11_Checkout_Request_Response.png | Checkout request and response |
 | 12_Feedback_Request_Response.png | Customer feedback submission request and response |
 | 13_Complaint_Request_Response.png | Complaint submission request and response |
-| 14_User_Registration_Request_Response.png | user registration request and response |
+| 14_User_Registration_Request_Response.png | User registration request and response |
 
 ---
 
