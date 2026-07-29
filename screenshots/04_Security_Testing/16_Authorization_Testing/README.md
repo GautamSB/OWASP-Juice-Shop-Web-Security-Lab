@@ -159,35 +159,6 @@ This behavior may assist attackers during reconnaissance by exposing implementat
 
 ---
 
-# Burp Suite Workflow
-
-```
-Proxy
-   │
-   ▼
-Capture Login Request
-   │
-   ▼
-Obtain JWT
-   │
-   ▼
-Target Site Map
-   │
-   ▼
-Identify Admin Endpoint
-   │
-   ▼
-Send to Repeater
-   │
-   ▼
-Modify JWT / Headers / Cookies
-   │
-   ▼
-Analyze Authorization Behaviour
-```
-
----
-
 # Evidence Captured
 
 - Login using **test@gmail.com**
