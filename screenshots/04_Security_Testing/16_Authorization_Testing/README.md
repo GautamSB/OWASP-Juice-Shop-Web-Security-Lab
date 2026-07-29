@@ -114,8 +114,11 @@ was tested after removing both:
 
 ### Observation
 
-The request failed because authentication information was missing, demonstrating that the endpoint correctly requires an authenticated session before returning user information.
+The testing demonstrated that the `/rest/user/whoami` endpoint primarily relied on the authentication cookie for user identification.
 
+- Removing only the **Authorization: Bearer** header still returned **HTTP/1.1 200 OK**, indicating that the endpoint continued to authenticate the request using the cookie token.
+- Removing the **authentication cookie** resulted in authentication failure, confirming that the endpoint depends on the cookie-based session for authentication.
+  
 ---
 
 # Summary of Tests Performed
