@@ -44,8 +44,8 @@ This directory contains screenshots captured during the OWASP Juice Shop Web App
 | Screenshot | Description |
 |------------|-------------|
 | 15_Login_Request_Testing.png | Authentication request testing using Burp Repeater |
-| 16_Directory_Enumeration.png | Application endpoint enumeration and analysis |
-| 17_Authorization_Testing.png | Authorization testing of protected resources |
+| 16_Authorization_Testing.png | Authorization testing of protected resources |
+| 17_Directory_Enumeration.png | Application endpoint enumeration and analysis |
 | 18_Parameter_Manipulation.png | HTTP parameter manipulation testing |
 | 19_Search_Parameter_Testing.png | Search functionality parameter testing |
 | 20_Feedback_Testing.png | Feedback request manipulation and validation |
