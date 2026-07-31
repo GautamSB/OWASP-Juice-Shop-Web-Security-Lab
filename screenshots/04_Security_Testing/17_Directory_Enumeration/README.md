@@ -41,21 +41,36 @@ A custom payload list containing common application directories and resources wa
 
 Example payloads included:
 
-- admin                          - cards
-- api                            - card
-- rest                           - checkout
-- login                          - quantities
-- users                          - profile
-- user                           - assets
-- products                       - images
-- product                        - ftp
-- basket                         - uploads
-- basketitems                    - robots.txt
-- addresss                       - swagger
-- complaints                     - docs
-- feedbacks                      - config
-- deliverys                      - appliaction
-- productitems                   - administration
+- admin                          
+- api                            
+- rest                           
+- login                          
+- users                          
+- user                           
+- products                       
+- product                        
+- basket                         
+- basketitems                    
+- addresss                       
+- complaints                     
+- feedbacks                      
+- deliverys                      
+- productitems
+- card
+- cards
+- checkout
+- quantities
+- profile
+- assets
+- images
+- ftp
+- uploads
+- robots.txt
+- swagger
+- docs
+- config
+- application
+- administration                  
 
 ### Observation
 
