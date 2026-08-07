@@ -1,26 +1,29 @@
-# OWASP Juice Shop Web Application Security Assessment using Burp Suite
+# OWASP Juice Shop Web Application Security Assessment using Burp Suite Professional
 
 ## 📖 Overview
 
-This repository documents a comprehensive Web Application Security Assessment performed against the intentionally vulnerable **OWASP Juice Shop** application using **Burp Suite Professional**.
+This repository documents a comprehensive **Web Application Security Assessment** performed against the intentionally vulnerable **OWASP Juice Shop** application using **Burp Suite Professional**.
 
-The assessment demonstrates a structured penetration testing methodology by identifying, analyzing, and validating common web application vulnerabilities through manual testing techniques. The objective was to understand application behavior, intercept and manipulate HTTP requests, evaluate server responses, and assess the application's security posture using industry-standard web application penetration testing practices.
+The assessment demonstrates a structured manual web application penetration testing methodology by identifying, analyzing, and validating security controls across multiple application components. Testing focused on authentication, authorization, endpoint discovery, parameter manipulation, business logic validation, input validation, error handling, and functional verification.
+
+All testing was conducted manually within a controlled laboratory environment using industry-standard web application penetration testing techniques.
 
 ---
 
 # 🎯 Assessment Objectives
 
-The objectives of this assessment were to:
+The primary objectives of this assessment were to:
 
-- Configure Burp Suite as an intercepting proxy
-- Deploy OWASP Juice Shop using Docker
+- Deploy OWASP Juice Shop in a local Docker environment
+- Configure Burp Suite Professional as an intercepting proxy
 - Capture and analyze HTTP/HTTPS traffic
-- Map the application's attack surface
-- Perform authentication testing
-- Analyze request and response behavior
-- Manipulate HTTP parameters
-- Validate server-side input handling
-- Verify common web application vulnerabilities
+- Enumerate application endpoints
+- Assess authentication and authorization mechanisms
+- Perform manual parameter manipulation
+- Evaluate server-side input validation
+- Assess business logic implementation
+- Verify application functionality
+- Identify security weaknesses
 - Document findings with supporting evidence
 
 ---
@@ -28,7 +31,7 @@ The objectives of this assessment were to:
 # 🖥️ Lab Environment
 
 | Component | Details |
-|-----------|---------|
+|------------|---------|
 | Host Operating System | Windows 11 |
 | Web Proxy | Burp Suite Professional |
 | Browser | Burp Suite Built-in Browser |
@@ -50,13 +53,13 @@ The objectives of this assessment were to:
 
 # 📦 Lab Setup
 
-## Pull the OWASP Juice Shop Docker Image
+## Pull Docker Image
 
 ```bash
 docker pull bkimminich/juice-shop
 ```
 
-## Run the Docker Container
+## Start Juice Shop
 
 ```bash
 docker run --rm -p 3000:3000 bkimminich/juice-shop
@@ -68,7 +71,7 @@ docker run --rm -p 3000:3000 bkimminich/juice-shop
 docker ps
 ```
 
-## Access the Application
+## Access Application
 
 ```
 http://localhost:3000
@@ -78,15 +81,15 @@ http://localhost:3000
 
 # ⚙️ Burp Suite Configuration
 
-The assessment environment was configured using Burp Suite Professional as the primary interception platform.
+The testing environment was configured using Burp Suite Professional.
 
 Configuration included:
 
-- Proxy Listener (127.0.0.1:8080)
+- Proxy Listener
 - Burp CA Certificate Installation
-- Burp Suite Built-in Browser
-- Target Scope Configuration
-- HTTP History Monitoring
+- Burp Suite Browser
+- HTTP History
+- Target Scope
 - Repeater
 - Intruder
 - Decoder
@@ -96,147 +99,249 @@ Configuration included:
 
 # 🔍 Assessment Methodology
 
-The assessment followed a structured web application penetration testing methodology.
+The assessment followed a structured manual web application penetration testing methodology.
 
-## Phase 1 — Environment Preparation
+## Phase 1 – Environment Preparation
 
-- Deploy OWASP Juice Shop using Docker
-- Configure Burp Suite Professional
-- Install Burp CA Certificate
-- Launch Burp Built-in Browser
-- Verify proxy interception
-- Confirm HTTP traffic capture
-
----
-
-## Phase 2 — Reconnaissance
-
-- Browse the application
-- Build the application Site Map
-- Identify exposed endpoints
-- Analyze HTTP requests
-- Review application functionality
-- Define testing scope
+- Docker deployment
+- Burp Suite configuration
+- Certificate installation
+- Browser configuration
+- Proxy verification
 
 ---
 
-## Phase 3 — Authentication Testing
+## Phase 2 – Application Reconnaissance
 
-- Capture login requests
-- Analyze authentication workflow
-- Modify authentication parameters
-- Observe server responses
-- Evaluate authentication controls
-
----
-
-## Phase 4 — Input Validation Testing
-
-- Test client-side validation
-- Validate server-side input filtering
-- Analyze error messages
-- Manipulate request parameters
-- Observe response behavior
+- Browse application
+- Build Target Site Map
+- Discover API endpoints
+- Analyze application structure
+- Define assessment scope
 
 ---
 
-## Phase 5 — Parameter Manipulation
+## Phase 3 – Authentication Assessment
 
-- Modify HTTP requests
-- Replay requests using Repeater
-- Compare application responses
-- Validate parameter handling
-
----
-
-## Phase 6 — Intruder Testing
-
-- Configure payload positions
-- Execute automated payload attacks
-- Analyze response differences
-- Identify abnormal application behavior
+- User registration
+- Login workflow analysis
+- JWT acquisition
+- Session validation
+- Authentication verification
 
 ---
 
-## Phase 7 — Vulnerability Validation
+## Phase 4 – Authorization Assessment
 
-- Verify identified vulnerabilities
-- Capture evidence
-- Assess security impact
-- Document findings
-- Recommend remediation
+- JWT validation
+- Cookie manipulation
+- Authorization header testing
+- Administrative endpoint testing
+- IDOR verification
+- Access control validation
+
+---
+
+## Phase 5 – Directory Enumeration
+
+- Endpoint discovery
+- API enumeration
+- Resource identification
+- Site Map analysis
+
+---
+
+## Phase 6 – Parameter Manipulation
+
+Manual parameter manipulation was performed across multiple endpoints including:
+
+- Basket
+- Address
+- Card
+- Checkout
+- Feedback
+- Product Search
+
+Testing included:
+
+- Missing parameters
+- Null values
+- Invalid data types
+- Numeric boundary testing
+- Authentication parameter manipulation
+- SQL Injection payloads
+- Cross-Site Scripting payloads
+- Business logic validation
+
+---
+
+## Phase 7 – Functional Verification
+
+Functional testing verified the application's primary workflows, including:
+
+- Product Search
+- Basket Management
+- Address Management
+- Payment Card Management
+- Checkout
+- Order History
+- Order Tracking
+- Feedback Submission
+- Complaint Submission
+
+---
+
+## Phase 8 – Security Validation
+
+The assessment concluded by validating:
+
+- Server-side input validation
+- Authentication mechanisms
+- Authorization controls
+- Business logic
+- Error handling
+- Information disclosure
+- Security observations
 
 ---
 
 # 🔎 Burp Suite Components Used
 
 | Component | Purpose |
-|-----------|---------|
+|------------|---------|
 | Proxy | Intercept HTTP/HTTPS traffic |
-| HTTP History | Analyze application requests |
-| Target | Build application Site Map |
-| Repeater | Modify and replay HTTP requests |
+| HTTP History | Review captured requests |
+| Target Site Map | Discover application endpoints |
+| Repeater | Manual request modification |
 | Intruder | Automated payload testing |
-| Decoder | Encode and decode data |
+| Decoder | Encode/Decode data |
 | Comparer | Compare requests and responses |
 
 ---
 
-# 📊 Assessment Deliverables
+# 📂 Assessment Modules
 
-This assessment includes:
+The repository contains detailed reports for the following assessment areas:
 
-- Docker deployment
-- Burp Suite configuration
-- HTTP request interception
-- Site Map generation
-- Authentication testing
-- Request manipulation
-- Response analysis
-- Parameter tampering
-- Intruder testing
-- Evidence collection
-- Professional assessment report
+- Login Request Testing
+- Authorization Testing
+- Directory Enumeration
+- Parameter Manipulation
+- Search Parameter Testing
+- Basket Parameter Testing
+- Address Parameter Testing
+- Card Parameter Testing
+- Checkout Parameter Testing
+- Feedback Parameter Testing
+- Functional Testing
+
+Each module contains:
+
+- Objective
+- Methodology
+- Burp Suite workflow
+- Test cases
+- Security observations
+- Supporting screenshots
+- Conclusion
 
 ---
 
-# 📄 Detailed Report
+# 📊 Security Assessment Coverage
 
-The complete penetration testing process, observations, request analysis, screenshots, findings, and remediation recommendations are documented in:
-
-**REPORT.md**
+| Assessment Area | Status |
+|-----------------|--------|
+| Authentication Testing | ✅ Completed |
+| Authorization Testing | ✅ Completed |
+| JWT Validation | ✅ Completed |
+| Cookie Manipulation | ✅ Completed |
+| IDOR Verification | ✅ Completed |
+| Directory Enumeration | ✅ Completed |
+| Parameter Manipulation | ✅ Completed |
+| Search Parameter Testing | ✅ Completed |
+| Basket Testing | ✅ Completed |
+| Address Testing | ✅ Completed |
+| Card Testing | ✅ Completed |
+| Checkout Testing | ✅ Completed |
+| Feedback Testing | ✅ Completed |
+| SQL Injection Testing | ✅ Completed |
+| Cross-Site Scripting (XSS) Testing | ✅ Completed |
+| Input Validation Assessment | ✅ Completed |
+| Business Logic Testing | ✅ Completed |
+| Error Handling Assessment | ✅ Completed |
+| Information Disclosure Assessment | ✅ Completed |
+| Functional Testing | ✅ Completed |
 
 ---
 
-# 📚 Learning Outcomes
+# 📁 Repository Structure
 
-This assessment provided hands-on experience in:
+```
+OWASP-Juice-Shop-Security-Assessment/
+│
+├── Screenshots/
+├── Security_Testing/
+│   ├── Login_Request_Testing/
+│   ├── Authorization_Testing/
+│   ├── Directory_Enumeration/
+│   ├── Parameter_Manipulation/
+│   ├── Search_Parameter_Testing/
+│   ├── Basket_Parameter_Testing/
+│   ├── Address_Parameter_Testing/
+│   ├── Card_Parameter_Testing/
+│   ├── Checkout_Parameter_Testing/
+│   └── Feedback_Parameter_Testing/
+│
+├── Functional_Testing/
+├── REPORT.md
+└── README.md
+```
+
+---
+
+# 📄 Assessment Report
+
+The complete assessment, including testing methodology, observations, screenshots, findings, and conclusions, is documented within the individual assessment modules and the accompanying **REPORT.md**.
+
+---
+
+# 📚 Skills Demonstrated
+
+This project demonstrates practical experience in:
 
 - Web Application Penetration Testing
 - Burp Suite Professional
 - Docker-based Lab Deployment
 - HTTP/HTTPS Traffic Analysis
-- Request Interception
-- Manual Request Manipulation
 - Authentication Testing
-- Input Validation Testing
-- Parameter Tampering
-- Intruder-based Testing
-- Manual Vulnerability Verification
-- Professional Security Reporting
+- Authorization Testing
+- JWT Analysis
+- Directory Enumeration
+- Parameter Manipulation
+- SQL Injection Testing
+- Cross-Site Scripting (XSS) Testing
+- Business Logic Testing
+- IDOR Verification
+- Input Validation Assessment
+- Error Handling Analysis
+- Functional Testing
+- Technical Documentation
+- Security Reporting
 
 ---
 
 # ⚠️ Disclaimer
 
-This assessment was conducted exclusively within a controlled laboratory environment using **OWASP Juice Shop**, an intentionally vulnerable application designed for security education and penetration testing practice. No testing was performed against unauthorized systems.
+This assessment was conducted exclusively within a controlled laboratory environment using **OWASP Juice Shop**, an intentionally vulnerable application developed for security awareness, education, and penetration testing practice.
+
+No testing was performed against unauthorized systems or production environments.
 
 ---
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
 **Gautam S B**
 
 Aspiring Cybersecurity Engineer | VAPT Enthusiast
 
-GitHub: https://github.com/GautamSB
+**GitHub:** https://github.com/GautamSB
