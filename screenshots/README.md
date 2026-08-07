@@ -2,9 +2,9 @@
 
 ## Objective
 
-This directory contains screenshots captured during the **OWASP Juice Shop Web Application Security Assessment** performed using **Burp Suite Professional**. The screenshots provide visual evidence of the assessment methodology, application mapping, HTTP request and response analysis, manual security testing, and functional verification of the application's core features.
+This directory contains screenshots captured during the **OWASP Juice Shop Web Application Security Assessment** performed using **Burp Suite Professional**. The screenshots provide visual evidence of the assessment methodology, application mapping, HTTP request and response analysis, manual security testing, Burp Suite tool demonstrations, and functional verification of the application's core features.
 
-The evidence presented in this directory supports the observations and findings documented throughout the assessment reports contained within this repository.
+The evidence presented in this directory supports the observations, findings, and conclusions documented throughout the assessment reports contained within this repository.
 
 ---
 
@@ -16,6 +16,7 @@ The screenshots are organized into the following categories:
 - Application Mapping
 - HTTP Request & Response Analysis
 - Security Testing
+- Burp Suite Tool Demonstration
 - Functional Testing
 
 ---
@@ -82,6 +83,17 @@ The screenshots are organized into the following categories:
 
 ---
 
+# Decoder and Comparer
+
+| Screenshot | Description |
+|------------|-------------|
+| 28_JWT_Decoding.png | JWT token decoding and payload inspection using Burp Suite Decoder |
+| 29_URL_Base64_Encoding_Decoding.png | URL encoding/decoding and Base64 encoding/decoding using Burp Suite Decoder |
+| 30_JWT_Response_Comparison.png | Comparison of authentication responses for two user accounts using Burp Suite Comparer |
+| 31_Address_Response_Comparison.png | Comparison of address creation responses highlighting differences in HTTP headers and JSON data using Burp Suite Comparer |
+
+---
+
 # Assessment Coverage
 
 The screenshots provide supporting evidence for the following assessment activities:
@@ -98,14 +110,17 @@ The screenshots provide supporting evidence for the following assessment activit
 - SQL Injection testing
 - Cross-Site Scripting (XSS) testing
 - Business logic testing
-- IDOR verification
+- Insecure Direct Object Reference (IDOR) verification
 - Error handling assessment
+- JWT decoding and authentication token analysis
+- URL and Base64 encoding/decoding
+- HTTP request and response comparison
 - Functional verification of core application features
 
 ---
 
 # Notes
 
-All screenshots were captured during manual testing performed against the OWASP Juice Shop application running within a controlled laboratory environment.
+All screenshots were captured during manual testing performed against the **OWASP Juice Shop** application running within a controlled laboratory environment using **Burp Suite Professional**.
 
-The screenshots are intended solely as supporting evidence for the observations, findings, and conclusions documented throughout this repository. Each image corresponds to a specific phase of the assessment and demonstrates the practical application of manual web application security testing techniques using Burp Suite Professional.
+The screenshots are intended solely as supporting evidence for the observations, findings, and conclusions documented throughout this repository. Each image corresponds to a specific phase of the assessment and demonstrates the practical application of manual web application security testing techniques and Burp Suite analysis capabilities.
