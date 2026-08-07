@@ -28,7 +28,6 @@ The following security assessments were performed during the engagement:
 * **Proxy** – Captured and intercepted HTTP requests and responses.
 * **Target Site Map** – Mapped application endpoints and resources.
 * **Repeater** – Replayed and modified requests to evaluate server-side validation.
-* **Intruder** – Automated payload injection for testing input validation, fuzzing parameters, and identifying potential injection points.
 * **HTTP History** – Reviewed application traffic throughout testing.
 
 ---
