@@ -16,8 +16,8 @@ The screenshots are organized into the following categories:
 - Application Mapping
 - HTTP Request & Response Analysis
 - Security Testing
-- Burp Suite Tool Demonstration
 - Functional Testing
+- Decoder and Comparer
 
 ---
 
