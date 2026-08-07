@@ -301,7 +301,7 @@ OWASP-Juice-Shop-Security-Assessment/
 
 # 📄 Assessment Report
 
-The complete assessment, including testing methodology, observations, screenshots, findings, and conclusions, is documented within the individual assessment modules and the accompanying **REPORT.md**.
+The complete assessment, including testing methodology, observations, screenshots, findings, and conclusions, is documented within the individual assessment modules and the accompanying **[REPORT.md](REPORT.md)**.
 
 ---
 
