@@ -2,7 +2,7 @@
 
 ## Objective
 
-Evaluate the application's authorization mechanisms by verifying authentication handling, JWT validation, user identity verification, and access control for protected and administrative API endpoints. The assessment focused on understanding how the application authenticates users, validates session information, and restricts access to sensitive resources.
+Evaluate the application's authorization mechanisms by verifying authentication handling, JWT validation, user identity verification, access control for protected and administrative API endpoints, and object-level authorization. The assessment focused on understanding how the application authenticates users, validates session information, and restricts access to sensitive resources belonging to other users.
 
 ---
 
@@ -20,6 +20,7 @@ Evaluate the application's authorization mechanisms by verifying authentication 
 POST /rest/user/login
 GET  /rest/user/whoami
 GET  /rest/admin/application-configuration
+POST /rest/basket/{basketId}/checkout
 ```
 
 ---
@@ -61,11 +62,11 @@ Testing showed that the endpoint determines the authenticated user primarily fro
 
 Observed behavior:
 
-- **Valid Cookie + Valid JWT** → HTTP 200 OK with authenticated user information.
-- **Valid Cookie + Different JWT** → Response reflected the identity associated with the cookie token.
-- **Authorization header removed** → HTTP 200 OK with authenticated user information.
-- **Cookie removed (Bearer token only)** → HTTP 200 OK with an empty user object (`{"user":{}}`).
-- **Authorization header and Cookie both removed** → HTTP 200 OK with an empty user object (`{"user":{}}`).
+- Valid Cookie + Valid JWT → HTTP 200 OK with authenticated user information.
+- Valid Cookie + Different JWT → Response reflected the identity associated with the cookie token.
+- Authorization header removed → HTTP 200 OK with authenticated user information.
+- Cookie removed (Bearer token only) → HTTP 200 OK with an empty user object (`{"user":{}}`).
+- Authorization header and Cookie both removed → HTTP 200 OK with an empty user object (`{"user":{}}`).
 
 These observations indicate that the `/rest/user/whoami` endpoint relies on the cookie-based authentication session to establish user identity, while the Authorization header alone was insufficient to authenticate the request.
 
@@ -112,6 +113,56 @@ Based on the observed behavior, the endpoint remained publicly accessible during
 
 ---
 
+## 5. Object-Level Authorization (IDOR) Assessment
+
+The checkout functionality was evaluated to determine whether the application validates ownership of basket resources before processing an order.
+
+The following endpoint was tested:
+
+```http
+POST /rest/basket/{basketId}/checkout
+```
+
+Two authenticated user accounts were used:
+
+- **test@gmail.com**
+- **example@gmail.com**
+
+The authenticated session remained as **test@gmail.com**.
+
+The **basketId** contained in the request URL was modified from the authenticated user's basket to the basket belonging to **example@gmail.com**.
+
+No changes were made to:
+
+- Authorization Bearer Token
+- Authentication Cookie
+- Session information
+
+Only the basket identifier was modified.
+
+### Observation
+
+The modified request successfully returned:
+
+```http
+HTTP/1.1 200 OK
+```
+
+The application processed the checkout request using the modified basket identifier.
+
+Observed behavior:
+
+- Checkout completed successfully.
+- Products belonging to **example@gmail.com** were included in the generated order.
+- The newly generated order appeared in the order history of the authenticated **test@gmail.com** account.
+- The basket belonging to **example@gmail.com** was emptied after checkout.
+
+The application did not verify whether the supplied basket identifier belonged to the authenticated user before completing the checkout process.
+
+This behavior demonstrates an **Insecure Direct Object Reference (IDOR)** resulting from insufficient server-side authorization checks.
+
+---
+
 # Summary of Tests Performed
 
 | Test | Result |
@@ -126,6 +177,7 @@ Based on the observed behavior, the endpoint remained publicly accessible during
 | Cookie token removed | ✅ Tested |
 | Authorization header + Cookie removed (`/rest/user/whoami`) | ✅ Returned HTTP 200 OK with empty user object |
 | Authorization header + Cookie removed (`/rest/admin/application-configuration`) | ✅ Returned HTTP 200 OK with configuration data |
+| Basket ID manipulation during checkout | ⚠️ HTTP 200 OK – Another user's basket successfully checked out |
 
 ---
 
@@ -159,6 +211,22 @@ Although this behavior may be intentional within the OWASP Juice Shop training e
 
 ---
 
+## Insecure Direct Object Reference (IDOR)
+
+Manual manipulation of the **basketId** within the checkout request allowed an authenticated user to successfully process another user's shopping basket.
+
+The server accepted the modified basket identifier without verifying ownership of the referenced resource.
+
+As a result:
+
+- Another user's basket contents were successfully checked out.
+- The generated order appeared in the authenticated user's order history.
+- The original owner's basket was emptied after checkout.
+
+These observations indicate insufficient object-level authorization and demonstrate a **Broken Access Control (IDOR)** vulnerability.
+
+---
+
 # Evidence Captured
 
 - Successful login using **test@gmail.com**
@@ -167,15 +235,20 @@ Although this behavior may be intentional within the OWASP Juice Shop training e
 - Cookie-based authentication verification
 - Administrative endpoint discovery using Burp Target Site Map
 - Authorization assessment of `/rest/admin/application-configuration`
+- Checkout request with modified **basketId**
+- Successful checkout of another user's basket
+- Order history showing unauthorized checkout results
 
 ---
 
 # Conclusion
 
-Authorization testing was performed using Burp Suite by manually modifying authentication headers, cookie values, and JWT tokens to evaluate how the application handled authenticated requests.
+Authorization testing was performed using Burp Suite by manually modifying authentication headers, cookie values, JWT tokens, and user-controlled object identifiers to evaluate how the application enforced authorization.
 
 The `/rest/user/whoami` endpoint consistently relied on the authentication cookie to establish user identity. Removing the Authorization header alone did not affect authentication, whereas removing the cookie resulted in the endpoint returning an empty user object despite responding with **HTTP 200 OK**.
 
-The `/rest/admin/application-configuration` endpoint remained accessible under all tested authentication scenarios and consistently returned application configuration information. This behavior was documented because publicly exposed configuration data may provide useful reconnaissance information during a security assessment.
+The `/rest/admin/application-configuration` endpoint remained accessible under all tested authentication scenarios and consistently returned application configuration information.
 
-Overall, the assessment demonstrated manual authorization testing techniques including JWT verification, cookie manipulation, identity validation, endpoint authorization analysis, and administrative endpoint assessment using Burp Suite.
+Additionally, the checkout functionality was found to be vulnerable to **Insecure Direct Object Reference (IDOR)**. By modifying the `basketId` within the checkout request, it was possible to process another authenticated user's basket without changing the authenticated session. The server failed to verify ownership of the referenced basket before processing the checkout request, allowing unauthorized access to another user's resources.
+
+Overall, the assessment demonstrated manual authorization testing techniques including JWT verification, cookie manipulation, identity validation, administrative endpoint assessment, and object-level authorization testing using Burp Suite.
