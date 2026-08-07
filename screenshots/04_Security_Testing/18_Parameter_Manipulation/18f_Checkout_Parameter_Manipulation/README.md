@@ -1,16 +1,16 @@
-# Basket Parameter Manipulation
+# Checkout Parameter Manipulation
 
 ## Objective
 
-Evaluate the application's server-side validation and handling of basket-related parameters by manipulating the checkout request. The assessment focused on identifying improper input validation, parameter validation weaknesses, error handling, and the application's response to malformed or unexpected parameter values during the checkout process.
+Evaluate the application's input validation and server-side handling of checkout parameters by manipulating request parameters used during the order checkout process. The assessment focused on identifying improper input validation, error handling, parameter validation, information disclosure, and the application's response to malformed or unexpected user input.
 
 ---
 
 ## Burp Suite Tools Used
 
-- **Proxy** – Captured basket checkout requests.
+- **Proxy** – Captured checkout requests.
 - **Target Site Map** – Identified the checkout endpoint.
-- **Repeater** – Modified basket-related parameters and replayed requests to evaluate server-side validation.
+- **Repeater** – Modified checkout parameters and replayed requests to evaluate server-side input validation.
 
 ---
 
@@ -24,141 +24,75 @@ POST /rest/basket/{basketId}/checkout
 
 # Testing Methodology
 
-## 1. Authentication Header Validation
+## 1. Authentication Verification
 
-The checkout request was tested by modifying the authentication credentials.
+The checkout request was tested by modifying authentication credentials.
 
 The following scenarios were tested:
 
-- Modified Authorization Bearer token
-- Modified authentication Cookie
-- Authorization header replaced
-- Cookie replaced
+- Authorization Bearer token modified
+- Authentication Cookie modified
+- Authorization Bearer token removed
+- Authentication Cookie removed
 
 ### Observation
 
-The application continued processing requests only when valid authentication credentials were supplied.
+The application continued processing the checkout request using the authenticated session.
 
-Requests made using valid authentication sessions returned:
+Observed responses included:
 
 ```http
 HTTP/1.1 200 OK
 ```
 
-When the authenticated basket had already been checked out, the application generated a new order containing no products because the basket was empty.
+When the associated basket contained products, checkout completed successfully.
+
+When the basket had already been checked out, the application still returned **HTTP 200 OK**, but generated an empty order because no products remained in the basket.
 
 ---
 
-## 2. Checkout Parameter Validation
+## 2. Checkout Parameter Manipulation
 
-The following request body parameters were manually manipulated:
+The following request parameters were manually modified during testing:
 
-- `paymentId`
-- `addressId`
-- `deliveryMethodId`
-- `couponData`
+- paymentId
+- addressId
+- deliveryMethodId
+- couponData
 
-Each parameter was tested individually using:
+The following input variations were tested:
 
 - Empty values
 - Null values
-- Removal of the parameter
-- Negative numbers
-- Alphabetic characters
-- Alphanumeric values
+- Parameter removal
+- Negative values
+- Alphabetic input
+- Alphanumeric input
 - Special characters
 - SQL Injection payloads
 - Cross-Site Scripting (XSS) payloads
 
 ### Observation
 
-For all tested parameter variations, the application consistently returned:
+For all tested input variations, the application responded with:
 
 ```http
 HTTP/1.1 200 OK
 ```
 
-Observed behaviour:
+No unexpected server-side validation failures were observed.
 
-- If the basket contained products, checkout completed successfully.
-- If the basket had already been checked out, a new empty order was created.
-- None of the manipulated parameter values prevented the checkout operation.
+If the basket contained products, checkout completed successfully.
 
-No client-side script execution or SQL injection behavior was observed through these parameters.
+If the basket was empty, the application completed checkout and generated an empty order.
 
 ---
 
-## 3. Empty Request Body
+## 3. Invalid Basket Identifier
 
-The entire JSON request body was removed before replaying the request.
+The basket identifier contained within the request URL was modified to a non-existent basket identifier.
 
-Modified request:
-
-```json
-{}
-```
-
-### Observation
-
-The application successfully processed the checkout request.
-
-Response:
-
-```http
-HTTP/1.1 200 OK
-```
-
-When products were present in the basket, checkout completed successfully using the existing basket information.
-
-When the basket was empty, an empty order was generated.
-
-This behaviour indicates that the application primarily relies on the basket state rather than the supplied request body parameters during checkout.
-
----
-
-## 4. Malformed JSON Testing
-
-The JSON request body was intentionally modified to contain invalid JSON syntax.
-
-Example:
-
-```json
-{
-  "paymentId":"7",
-  "addressId":"7",
-```
-
-### Observation
-
-The application returned:
-
-```http
-HTTP/1.1 500 Internal Server Error
-```
-
-The response disclosed internal implementation details including:
-
-- JSON parsing error
-- Server-side stack trace
-- Internal file paths
-- Framework error information
-
-Example:
-
-```text
-Unexpected token '{'
-... is not valid JSON
-```
-
-This behavior resulted in verbose server-side error disclosure.
-
----
-
-## 5. Invalid Basket Identifier
-
-The basket identifier contained within the request URL was replaced with a non-existent basket identifier.
-
-Modified request:
+Modified request example:
 
 ```http
 POST /rest/basket/10/checkout
@@ -166,21 +100,74 @@ POST /rest/basket/10/checkout
 
 ### Observation
 
-The application returned:
+The application responded with:
 
 ```http
 HTTP/1.1 500 Internal Server Error
 ```
 
-The response disclosed:
+The response disclosed an application error indicating:
 
 ```text
 Basket with id=10 does not exist.
 ```
 
-along with an internal stack trace.
+The response also included an internal application stack trace.
 
-The server correctly rejected the invalid basket identifier; however, verbose error information was exposed within the response.
+This behavior exposed internal implementation details instead of returning a generic client error.
+
+---
+
+## 4. Malformed JSON Testing
+
+The JSON request body was intentionally modified to contain invalid JSON syntax.
+
+Example modifications included:
+
+- Missing quotation marks
+- Missing commas
+- Incorrect braces
+- Invalid JSON structure
+
+### Observation
+
+The application responded with:
+
+```http
+HTTP/1.1 500 Internal Server Error
+```
+
+The response exposed detailed parser error information including:
+
+- Unexpected token
+- JSON parsing exception
+- Internal stack trace
+
+The application returned verbose internal error messages rather than a generic validation error.
+
+---
+
+## 5. Cross-Site Scripting (XSS) Input Validation
+
+Cross-Site Scripting payloads were submitted through multiple checkout parameters.
+
+Example payload:
+
+```html
+<script>alert(1)</script>
+```
+
+### Observation
+
+The application responded with:
+
+```http
+HTTP/1.1 200 OK
+```
+
+The payload was not reflected within the application and no JavaScript execution occurred.
+
+Checkout behavior remained unchanged.
 
 ---
 
@@ -188,24 +175,24 @@ The server correctly rejected the invalid basket identifier; however, verbose er
 
 | Test | Result |
 |------|--------|
-| Authentication header manipulation | ✅ Valid sessions processed successfully |
+| Authentication manipulation | ✅ HTTP 200 OK |
 | paymentId manipulation | ✅ HTTP 200 OK |
 | addressId manipulation | ✅ HTTP 200 OK |
 | deliveryMethodId manipulation | ✅ HTTP 200 OK |
 | couponData manipulation | ✅ HTTP 200 OK |
-| Empty request body | ✅ HTTP 200 OK |
-| Malformed JSON | ⚠️ HTTP 500 Internal Server Error |
 | Invalid basket identifier | ⚠️ HTTP 500 Internal Server Error |
+| Malformed JSON | ⚠️ HTTP 500 Internal Server Error |
+| XSS payload | ✅ Payload not executed |
 
 ---
 
 # Security Observations
 
-## Parameter Validation
+## Input Validation
 
-Testing demonstrated that the checkout process continued successfully despite extensive manipulation of request body parameters including empty values, null values, removed parameters, SQL injection payloads, XSS payloads, numeric manipulation, and special characters.
+The application accepted multiple modified parameter values including empty, null, negative, alphanumeric, special character, SQL injection, and XSS payloads without interrupting the checkout workflow.
 
-The application primarily relied on the authenticated basket state when processing checkout requests.
+No client-side script execution was observed during XSS testing.
 
 ---
 
@@ -213,47 +200,42 @@ The application primarily relied on the authenticated basket state when processi
 
 Submitting malformed JSON generated an internal server error.
 
-The response exposed:
+The application exposed detailed JSON parsing exceptions together with internal stack trace information.
 
-- JSON parser error
-- Internal stack trace
-- Framework implementation details
-- Server file paths
+Similarly, supplying a non-existent basket identifier generated an internal server error revealing application-specific error messages and implementation details.
 
-Such verbose error messages provide useful reconnaissance information regarding the application's backend implementation.
+Although these behaviors did not result in unauthorized access during this assessment, verbose error messages provide useful reconnaissance information that could assist an attacker in understanding backend application logic.
 
 ---
 
-## Invalid Resource Handling
+## Checkout Behaviour
 
-Replacing the basket identifier with a non-existent value resulted in:
+The checkout endpoint consistently returned successful responses when processing valid authenticated requests, even when modified parameter values were supplied.
 
-```http
-HTTP/1.1 500 Internal Server Error
-```
+Checkout behavior primarily depended on whether products existed within the associated basket.
 
-The response disclosed internal error information, including the message indicating that the basket did not exist.
+When products were present, an order was successfully created.
 
-Although the application correctly rejected the invalid basket identifier, returning an internal server error with detailed exception information may expose unnecessary implementation details.
+When the basket was empty, checkout still completed successfully and generated an empty order.
 
 ---
 
 # Evidence Captured
 
-- Authentication header validation
+- Authentication manipulation behaviour
 - Checkout parameter manipulation
-- Empty request body behaviour
-- Malformed JSON error disclosure
 - Invalid basket identifier handling
+- Malformed JSON error disclosure
+- XSS payload validation
 
 ---
 
 # Conclusion
 
-Basket parameter manipulation testing was performed by modifying authentication credentials, checkout parameters, request body content, and basket identifiers to evaluate server-side validation during the checkout process.
+Checkout parameter manipulation testing was performed by modifying authentication values, checkout parameters, request structure, and malformed input values submitted to the checkout endpoint.
 
-The application consistently processed checkout requests despite extensive manipulation of request body parameters, indicating that the supplied checkout parameters had limited influence over the checkout operation and that processing primarily depended on the authenticated basket state.
+The application demonstrated stable handling of most modified parameter values including empty, null, negative, alphanumeric, SQL injection, and XSS payloads.
 
-Testing also identified two error-handling issues. Malformed JSON input generated verbose server-side error messages exposing internal implementation details, while invalid basket identifiers resulted in detailed exception messages and stack traces. Although no direct parameter manipulation vulnerability was confirmed through the tested request body parameters, the observed information disclosure may assist attackers during reconnaissance.
+Testing identified that malformed JSON requests and invalid basket identifiers triggered **HTTP 500 Internal Server Error** responses exposing verbose application error messages and internal stack traces. While these issues did not directly result in unauthorized access during parameter validation testing, the disclosed information represents an information disclosure weakness that could assist attackers during reconnaissance.
 
-Overall, the assessment demonstrated manual parameter manipulation techniques using Burp Suite Repeater to evaluate server-side validation, request processing, and error handling within the basket checkout functionality.
+Overall, the assessment demonstrated manual input validation testing techniques using Burp Suite Repeater to evaluate checkout functionality and server-side parameter handling.
